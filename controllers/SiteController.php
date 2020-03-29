@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -20,10 +21,14 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                //'only' => ['logout'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['login', 'error'],
+                        'allow' => true,
+                    ],
+                    [
+                        'actions' => ['logout', 'index'], // add all actions to take guest to login page
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -61,6 +66,21 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        /*/
+        $user = new User();
+        $user->username = "alex";
+        $user->email = "alex@yahoo2.com";
+        $user->setPassword("clownfrog38#$");
+        $user->generateAuthKey();
+        $user->save(false);
+
+        echo "<Pre>";
+        echo "User added \n";
+        die();
+        //*/
+
+        $this->redirect('item/index');
+
         return $this->render('index');
     }
 
