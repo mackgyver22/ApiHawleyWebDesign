@@ -19,6 +19,7 @@ class LastTimeController extends Controller
 {
     public $enableCsrfValidation = false;
     private $allowedOriginDomain = "https://contacts.hawleywebdesign.com";
+    //private $allowedOriginDomain = "http://127.0.0.1:4201";
 
     /**
      * {@inheritdoc}
