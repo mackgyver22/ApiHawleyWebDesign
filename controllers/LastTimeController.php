@@ -157,19 +157,6 @@ class LastTimeController extends Controller
         $date->modify("-$get_days_back day");
         $pay_date = $date->format("Y-m-d");
 
-
-        /*/
-        $item = Item::findOne(1)->toArray();
-        echo "<pre>";
-        print_r($item);
-        die();
-
-        $itemUsedHist = ItemUsedHistory::find()->where(['id' => 1])->one();
-        echo "<pre>";
-        print_r($itemUsedHist->item->toArray());
-        die();
-        //*/
-
         $sql = "SELECT iuh.*, i.title as item_name, i.color  
                 FROM ltc_item_used_history iuh 
                 INNER JOIN ltc_item i 
@@ -177,38 +164,19 @@ class LastTimeController extends Controller
                 WHERE iuh.date_used = :date_used ";
         $stmt_sel_items_used = Yii::$app->db->createCommand($sql);
 
-
         $start_date2 = date("Y-m-d", strtotime($pay_date));
-
         $dayNum = date("w", strtotime($start_date2));
 
-
-        $daysBack = 77 - $dayNum;
+        $daysBack = 77 + $dayNum;
 
         $date = new DateTime($pay_date);
         $date->modify("-$daysBack day");
         $start_date = $date->format("Y-m-d");
 
-
         $needsIncrease = 6 - $dayNum;
         $date2 = new DateTime($pay_date);
         $date2->modify("+$needsIncrease day");
         $end_date = $date2->format("Y-m-d");
-
-        /*/
-        $MyBills = array();
-        $Bill = new Bills();
-        $Bill->setPayPeriod($end_date, $start_date);
-        $billDates = $Bill->loadBillDatesByUserID($user_id);
-
-        foreach ($billDates as $getDate) {
-            $newDate = array();
-            $newDate['desc'] = $getDate['vnd_bill_desc'];
-            $newDate['amount'] = $getDate['vnd_amount'];
-            $key = strtotime(date("Y-m-d 00:00:00", strtotime($getDate['vnd_date'])));
-            $MyBills[$key][] = $newDate;
-        }
-        //*/
 
         $days_arr = array();
 
