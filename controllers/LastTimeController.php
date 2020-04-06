@@ -150,7 +150,7 @@ class LastTimeController extends Controller
 
         $request = Yii::$app->request;
         $get_days_back = $request->get('daysBack', 0);
-
+        
         $pay_date = date("Y-m-d");
 
         $date = new DateTime($pay_date);
