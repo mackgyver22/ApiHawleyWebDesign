@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\RiAttribute */
 
-$this->title = 'Update Ri Attribute: ' . $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Ri Attributes', 'url' => ['index']];
+$this->title = 'Update Attribute: ' . $model->title;
+$this->params['breadcrumbs'][] = ['label' => 'Attributes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

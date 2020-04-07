@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\RiIngredientPriceHistory */
 
-$this->title = 'Update Ri Ingredient Price History: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Ri Ingredient Price Histories', 'url' => ['index']];
+$this->title = 'Update Ingredient Price History: ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Ingredient Price Histories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

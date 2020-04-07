@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\RiAttribute */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Ri Attributes', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Attributes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>

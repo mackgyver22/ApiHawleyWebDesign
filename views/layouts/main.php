@@ -9,6 +9,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use kartik\nav\NavX;
 
 AppAsset::register($this);
 ?>
@@ -35,13 +36,52 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+
+    echo NavX::widget([
+        'options' => ['class' => 'navbar-nav navbar-right'],
+        'items' => [
+            ['label' => 'Items', 'url' => '/item'],
+            ['label' => 'Recipe Ingredients', 'items' => [
+                ['label' => 'Recipes', 'url' => '/ri-recipe/index'],
+                ['label' => 'Home Inventory', 'url' => '/ri-home-inventory/index'],
+                ['label' => 'Ingredients', 'url' => '/ri-ingredient/index'],
+                ['label' => 'Recipe Ingredients', 'url' => '/ri-recipe-to-ingredients/index'],
+                ['label' => 'Ingredient Types', 'url' => '/ri-ingredient-type/index'],
+                ['label' => 'Ingredient Price History', 'url' => '/ri-ingredient-price-history/index'],
+                ['label' => 'Flavors', 'url' => '/ri-flavor/index'],
+                ['label' => 'Attributes', 'url' => '/ri-attribute/index'],
+                ['label' => 'Grocery Store', 'url' => '/ri-grocery-store/index'],
+            ]],
+            Yii::$app->user->isGuest ? (
+            ['label' => 'Login', 'url' => ['/item']]
+            ) : (
+                '<li>'
+                . Html::beginForm(['/site/logout'], 'post')
+                . Html::submitButton(
+                    'Logout (' . Yii::$app->user->identity->username . ')',
+                    ['class' => 'btn btn-link logout']
+                )
+                . Html::endForm()
+                . '</li>'
+            ),
+        ],
+        'encodeLabels' => false
+    ]);
+
+    /*/
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Items', 'url' => ['/item']],
-            /*['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],*/
+            [
+                'label' => 'Recipe Ingredients',
+                'items' => [
+                    'label' => 'Test 1', 'url' => '/item'
+                ]
+            ],
+//            ['label' => 'Home', 'url' => ['/site/index']],
+//            ['label' => 'About', 'url' => ['/site/about']],
+//            ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/item']]
             ) : (
@@ -54,20 +94,21 @@ AppAsset::register($this);
                 . Html::endForm()
                 . '</li>'
             ),
-            /*Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )*/
+//            Yii::$app->user->isGuest ? (
+//                ['label' => 'Login', 'url' => ['/site/login']]
+//            ) : (
+//                '<li>'
+//                . Html::beginForm(['/site/logout'], 'post')
+//                . Html::submitButton(
+//                    'Logout (' . Yii::$app->user->identity->username . ')',
+//                    ['class' => 'btn btn-link logout']
+//                )
+//                . Html::endForm()
+//                . '</li>'
+//            )
         ],
     ]);
+//*/
     NavBar::end();
     ?>
 

@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\RiIngredientPriceHistory */
 
-$this->title = 'Create Ri Ingredient Price History';
-$this->params['breadcrumbs'][] = ['label' => 'Ri Ingredient Price Histories', 'url' => ['index']];
+$this->title = 'Create Ingredient Price History';
+$this->params['breadcrumbs'][] = ['label' => 'Ingredient Price Histories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ri-ingredient-price-history-create">

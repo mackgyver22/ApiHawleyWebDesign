@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\search\RiAttribute */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Ri Attributes';
+$this->title = 'Attributes';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ri-attribute-index">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Ri Attribute', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Attribute', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\search\RiIngredientPriceHistory */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Ri Ingredient Price Histories';
+$this->title = 'Ingredient Price Histories';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ri-ingredient-price-history-index">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Ri Ingredient Price History', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Ingredient Price History', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

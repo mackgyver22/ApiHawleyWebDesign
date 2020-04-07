@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\search\RiFlavor */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Ri Flavors';
+$this->title = 'Flavors';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ri-flavor-index">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Ri Flavor', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Flavor', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

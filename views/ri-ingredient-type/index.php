@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\search\RiIngredientType */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Ri Ingredient Types';
+$this->title = 'Ingredient Types';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ri-ingredient-type-index">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Ri Ingredient Type', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Ingredient Type', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

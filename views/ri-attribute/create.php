@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\RiAttribute */
 
-$this->title = 'Create Ri Attribute';
-$this->params['breadcrumbs'][] = ['label' => 'Ri Attributes', 'url' => ['index']];
+$this->title = 'Create Attribute';
+$this->params['breadcrumbs'][] = ['label' => 'Attributes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ri-attribute-create">

@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\RiRecipe */
 
-$this->title = 'Create Ri Recipe';
-$this->params['breadcrumbs'][] = ['label' => 'Ri Recipes', 'url' => ['index']];
+$this->title = 'Create Recipe';
+$this->params['breadcrumbs'][] = ['label' => 'Recipes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ri-recipe-create">

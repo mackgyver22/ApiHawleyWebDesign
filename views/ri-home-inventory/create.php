@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\RiHomeInventory */
 
-$this->title = 'Create Ri Home Inventory';
-$this->params['breadcrumbs'][] = ['label' => 'Ri Home Inventories', 'url' => ['index']];
+$this->title = 'Create Home Inventory';
+$this->params['breadcrumbs'][] = ['label' => 'Home Inventories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ri-home-inventory-create">
