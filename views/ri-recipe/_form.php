@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 
 <div class="ri-recipe-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
@@ -21,6 +21,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'contains_salad')->textInput() ?>
 
     <?= $form->field($model, 'contains_gluten')->textInput() ?>
+
+    <?= $form->field($uploadModel, 'imageFile')->fileInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

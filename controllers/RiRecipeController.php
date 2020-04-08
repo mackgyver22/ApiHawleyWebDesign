@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\UploadForm;
 use Yii;
 use app\models\RiRecipe;
 use app\models\search\RiRecipeSearch;
@@ -9,6 +10,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * RiRecipeController implements the CRUD actions for RiRecipe model.
@@ -101,6 +103,28 @@ class RiRecipeController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $uploadModel = new UploadForm();
+
+        //*/
+        $post = Yii::$app->request->post();
+        echo '<pre>';
+        print_r($post);
+
+        echo "is post: " . Yii::$app->request->isPost . "\n";
+
+
+        if (Yii::$app->request->isPost) {
+            $uploadModel->imageFile = UploadedFile::getInstance($uploadModel, 'imageFile');
+            $retVal = $uploadModel->upload();
+            echo "retVal: \n";
+            print_r($retVal);
+            if ($retVal) {
+                echo "file uploaded successfully \n";
+            }
+        }
+
+        die();
+        //*/
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -108,6 +132,7 @@ class RiRecipeController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'uploadModel' => $uploadModel
         ]);
     }
 
