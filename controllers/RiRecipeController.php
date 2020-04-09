@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\UploadForm;
+use app\models\UploadRecipeImage;
 use Yii;
 use app\models\RiRecipe;
 use app\models\search\RiRecipeSearch;
@@ -82,6 +82,8 @@ class RiRecipeController extends Controller
      */
     public function actionCreate()
     {
+
+
         $model = new RiRecipe();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -90,6 +92,7 @@ class RiRecipeController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            "uploadModel" => null
         ]);
     }
 
@@ -103,30 +106,24 @@ class RiRecipeController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $uploadModel = new UploadForm();
+        $uploadModel = new UploadRecipeImage();
 
         //*/
         $post = Yii::$app->request->post();
-        echo '<pre>';
-        print_r($post);
 
-        echo "is post: " . Yii::$app->request->isPost . "\n";
-
-
+        $savedImagePath = '';
         if (Yii::$app->request->isPost) {
             $uploadModel->imageFile = UploadedFile::getInstance($uploadModel, 'imageFile');
-            $retVal = $uploadModel->upload();
-            echo "retVal: \n";
-            print_r($retVal);
-            if ($retVal) {
-                echo "file uploaded successfully \n";
-            }
+            $savedImagePath = $uploadModel->upload($id);
         }
 
-        die();
-        //*/
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            if ($savedImagePath) {
+                $model->image_path = $savedImagePath;
+                $model->save();
+            }
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\search\RiRecipeSearch */
@@ -28,11 +29,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <?php if ($message) : ?>
+        <div class="alert alert-success"><?= $message; ?></div>
+    <?php endif; ?>
+
+    <?php $form = ActiveForm::begin(); ?>
+
     <div class="form-group ">
         <label class="control-label" for="recipe_id">Recipe</label>
         <select name="recipe_id" id="recipe_id" class="form-control" >
             <?php foreach ($recipes as $getRecipe) : ?>
-               <option id="<?= $getRecipe->id; ?>" ><?= $getRecipe->title; ?></option>
+               <option value="<?= $getRecipe['id']; ?>" <?= ($getRecipe['selected']) ? "SELECTED" : ""; ?>><?= $getRecipe['title']; ?></option>
             <?php endforeach; ?>
         </select>
     </div>
@@ -41,10 +48,29 @@ $this->params['breadcrumbs'][] = $this->title;
         <ul class="ingred_checkboxes">
         <?php foreach ($ingredients as $getIngred) : ?>
             <li >
-                <input type="checkbox" name="ingred[]" id="ingred[]" value="<?= $getIngred->id; ?>" />&nbsp; <?= $getIngred->title; ?>
+                <input type="checkbox" name="ingredient_id[]" id="ingredient_id[]" value="<?= $getIngred['id']; ?>" <?= ($getIngred['selected'] == "1") ? "CHECKED" : ""; ?>/>&nbsp; <?= $getIngred['title']; ?>
             </li>
         <?php endforeach; ?>
         </ul>
     </div>
-    <button type="submit" class="btn btn-primary">Update</button>
+
+    <div class="form-group">
+        <?= Html::submitButton('Update', ['class' => 'btn btn-success']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
 </div>
+
+<script>
+
+    setTimeout(function() {
+
+
+
+        $('#recipe_id').change(function() {
+
+            window.location.href = '/ri-recipe-to-ingredients/index?recipe_id=' + $(this).val();
+        })
+
+    }, 750)
+</script>

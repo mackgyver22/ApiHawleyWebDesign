@@ -53,6 +53,7 @@ class RiRecipe extends \yii\db\ActiveRecord
             'last_date_made' => 'Last Date Made',
             'contains_salad' => 'Contains Salad',
             'contains_gluten' => 'Contains Gluten',
+            'image_path' => 'Image Path'
         ];
     }
 

@@ -15,6 +15,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'uploadModel' => $uploadModel
     ]) ?>
 
+    <?= yii\jui\DatePicker::widget(['name' => 'attributeName']) ?>
+
 </div>
+
+

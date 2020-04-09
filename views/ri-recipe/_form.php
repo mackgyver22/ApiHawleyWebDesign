@@ -22,7 +22,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'contains_gluten')->textInput() ?>
 
-    <?= $form->field($uploadModel, 'imageFile')->fileInput() ?>
+    <?php if ($uploadModel) : ?>
+        <?= $form->field($uploadModel, 'imageFile')->fileInput() ?>
+    <?php endif; ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
