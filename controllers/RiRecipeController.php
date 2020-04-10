@@ -82,12 +82,17 @@ class RiRecipeController extends Controller
      */
     public function actionCreate()
     {
-
-
         $model = new RiRecipe();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+
+            if ($model->last_date_made) {
+                $model->last_date_made = date("Y-m-d", strtotime($model->last_date_made));
+            }
+
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('create', [
@@ -117,11 +122,19 @@ class RiRecipeController extends Controller
             $savedImagePath = $uploadModel->upload($id);
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
-            if ($savedImagePath) {
-                $model->image_path = $savedImagePath;
-                $model->save();
+        if ($model->load(Yii::$app->request->post())) {
+
+            if ($model->last_date_made) {
+                $model->last_date_made = date("Y-m-d", strtotime($model->last_date_made));
+            }
+
+            if ($model->save()) {
+
+                if ($savedImagePath) {
+                    $model->image_path = $savedImagePath;
+                    $model->save();
+                }
             }
 
             return $this->redirect(['view', 'id' => $model->id]);

@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\jui\DatePicker;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -18,7 +19,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'price')->textInput() ?>
 
-    <?= $form->field($model, 'date_purchased')->textInput() ?>
+    <?= $form->field($model,'date_purchased')->widget(DatePicker::className(),[
+        'dateFormat' => 'MM/dd/yyyy',
+        'options' => [
+            'class' => 'form-control',
+        ],
+        'clientOptions' => []
+    ]) ?>
 
     <?= $form->field($model, 'grocery_store_id')->dropDownList($groceryStores) ?>
 

@@ -85,8 +85,15 @@ class RiIngredientPriceHistoryController extends Controller
     {
         $model = new RiIngredientPriceHistory();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+
+            if ($model->date_purchased) {
+                $model->date_purchased = date("Y-m-d", strtotime($model->date_purchased));
+            }
+
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('create', [
@@ -107,8 +114,16 @@ class RiIngredientPriceHistoryController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+
+            if ($model->date_purchased) {
+                $model->date_purchased = date("Y-m-d", strtotime($model->date_purchased));
+            }
+
+            if ($model->save()) {
+
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', [

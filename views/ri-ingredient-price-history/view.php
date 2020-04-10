@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\RiIngredientPriceHistory */
 
-$this->title = $model->id;
+$this->title = $model->ingredient->title . ' Price on ' . date("m/d/Y", strtotime($model->date_purchased));
 $this->params['breadcrumbs'][] = ['label' => 'Ingredient Price Histories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);

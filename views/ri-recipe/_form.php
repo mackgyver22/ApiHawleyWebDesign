@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use \yii\jui\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\RiRecipe */
@@ -16,11 +17,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'rating')->textInput() ?>
 
-    <?= $form->field($model, 'last_date_made')->textInput() ?>
+    <?= $form->field($model,'last_date_made')->widget(DatePicker::className(),[
+            'dateFormat' => 'MM/dd/yyyy',
+            'options' => [
+                'class' => 'form-control',
+            ],
+            'clientOptions' => []
+    ]) ?>
 
-    <?= $form->field($model, 'contains_salad')->textInput() ?>
+    <?= $form->field($model, 'contains_salad')->checkbox() ?>
 
-    <?= $form->field($model, 'contains_gluten')->textInput() ?>
+    <?= $form->field($model, 'contains_gluten')->checkbox() ?>
 
     <?php if ($uploadModel) : ?>
         <?= $form->field($uploadModel, 'imageFile')->fileInput() ?>

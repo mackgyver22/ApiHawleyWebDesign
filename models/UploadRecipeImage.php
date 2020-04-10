@@ -14,14 +14,15 @@ class UploadRecipeImage extends Model
     public function rules()
     {
         return [
-            [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
+            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
         ];
     }
 
     public function upload($recipeId)
     {
         $retVal = $this->validate();
-        if (!$retVal) {
+
+        if (!$retVal || !$this->imageFile) {
             return '';
         } else {
             $this->imageFile->saveAs('uploads/recipe_pics/' . $recipeId . '.' . $this->imageFile->extension);
