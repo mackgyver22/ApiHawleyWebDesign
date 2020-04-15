@@ -2,20 +2,24 @@
 
 namespace app\controllers;
 
-use app\models\UploadRecipeImage;
+use app\models\RiIngredient;
+use app\models\TvService;
+use app\models\TvShowType;
+use app\models\UploadShowImage;
 use Yii;
-use app\models\RiRecipe;
-use app\models\search\RiRecipeSearch;
+use app\models\TvShow;
+use app\models\search\TvShowSearch;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 
 /**
- * RiRecipeController implements the CRUD actions for RiRecipe model.
+ * TvShowController implements the CRUD actions for TvShow model.
  */
-class RiRecipeController extends Controller
+class TvShowController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -48,12 +52,12 @@ class RiRecipeController extends Controller
     }
 
     /**
-     * Lists all RiRecipe models.
+     * Lists all TvShow models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new RiRecipeSearch();
+        $searchModel = new TvShowSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -63,7 +67,7 @@ class RiRecipeController extends Controller
     }
 
     /**
-     * Displays a single RiRecipe model.
+     * Displays a single TvShow model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -76,33 +80,28 @@ class RiRecipeController extends Controller
     }
 
     /**
-     * Creates a new RiRecipe model.
+     * Creates a new TvShow model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new RiRecipe();
+        $model = new TvShow();
 
-        if ($model->load(Yii::$app->request->post())) {
-
-            if ($model->last_date_made) {
-                $model->last_date_made = date("Y-m-d", strtotime($model->last_date_made));
-            }
-
-            if ($model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'services' => ArrayHelper::map(TvService::find()->all(), 'id', 'title'),
+            'show_types' => ArrayHelper::map(TvShowType::find()->all(), 'id', 'title'),
             "uploadModel" => null
         ]);
     }
 
     /**
-     * Updates an existing RiRecipe model.
+     * Updates an existing TvShow model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -111,7 +110,7 @@ class RiRecipeController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $uploadModel = new UploadRecipeImage();
+        $uploadModel = new UploadShowImage();
 
         $savedImagePath = '';
         if (Yii::$app->request->isPost) {
@@ -121,9 +120,6 @@ class RiRecipeController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 
-            if ($model->last_date_made) {
-                $model->last_date_made = date("Y-m-d", strtotime($model->last_date_made));
-            }
             if ($model->save()) {
                 if ($savedImagePath) {
                     $model->image_path = $savedImagePath;
@@ -135,12 +131,14 @@ class RiRecipeController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'services' => ArrayHelper::map(TvService::find()->all(), 'id', 'title'),
+            'show_types' => ArrayHelper::map(TvShowType::find()->all(), 'id', 'title'),
             'uploadModel' => $uploadModel
         ]);
     }
 
     /**
-     * Deletes an existing RiRecipe model.
+     * Deletes an existing TvShow model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -154,15 +152,15 @@ class RiRecipeController extends Controller
     }
 
     /**
-     * Finds the RiRecipe model based on its primary key value.
+     * Finds the TvShow model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return RiRecipe the loaded model
+     * @return TvShow the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = RiRecipe::findOne($id)) !== null) {
+        if (($model = TvShow::findOne($id)) !== null) {
             return $model;
         }
 

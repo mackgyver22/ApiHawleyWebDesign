@@ -41,6 +41,15 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Items', 'url' => '/item'],
+            ['label' => 'TV Shows', 'items' => [
+                ['label' => 'What To Watch', 'url' => '/tv-show-mood-items/index'],
+                ['label' => 'Shows', 'url' => '/tv-show/index'],
+                ['label' => 'Moods', 'url' => '/tv-mood/index'],
+                ['label' => 'Show Types', 'url' => '/tv-show-type/index'],
+                ['label' => 'TV Services', 'url' => '/tv-service/index'],
+                ['label' => 'TV Show Moods', 'url' => '/tv-show-to-moods/index'],
+
+            ]],
             ['label' => 'Recipe Ingredients', 'items' => [
                 ['label' => 'Recipes', 'url' => '/ri-recipe/index'],
                 ['label' => 'Home Inventory', 'url' => '/ri-home-inventory-items/index'],
