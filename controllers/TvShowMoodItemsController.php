@@ -23,21 +23,6 @@ class TvShowMoodItemsController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                //'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['login', 'error'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['logout', 'index', 'grid', 'view', 'create', 'update', 'delete', 'find-model'], // add all actions to take guest to login page
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -55,7 +40,7 @@ class TvShowMoodItemsController extends Controller
     {
         $request = Yii::$app->request;
 
-        $mood_id = $request->get("mood_id", 0);
+        $mood_id = intval($request->get("mood_id", 0));
 
         $moods = TvMood::find()->orderBy(['display_order' => SORT_ASC])->asArray()->all();
 
@@ -92,7 +77,7 @@ class TvShowMoodItemsController extends Controller
     {
         $request = Yii::$app->request;
 
-        $mood_id = $request->get("mood_id", 0);
+        $mood_id = intval($request->get("mood_id", 0));
 
         $moods = TvMood::find()->orderBy(['display_order' => SORT_ASC])->asArray()->all();
 
