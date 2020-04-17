@@ -42,7 +42,8 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Items', 'url' => '/item'],
             ['label' => 'TV Shows', 'items' => [
-                ['label' => 'What To Watch', 'url' => '/tv-show-mood-items/index'],
+                ['label' => 'What To Watch', 'url' => '/tv-show-mood-items/grid'],
+                ['label' => 'What To Watch List', 'url' => '/tv-show-mood-items/index'],
                 ['label' => 'Shows', 'url' => '/tv-show/index'],
                 ['label' => 'Moods', 'url' => '/tv-mood/index'],
                 ['label' => 'Show Types', 'url' => '/tv-show-type/index'],
