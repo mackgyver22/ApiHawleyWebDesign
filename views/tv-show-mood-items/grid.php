@@ -74,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         $('#mood_id').change(function() {
 
-            window.location.href = '/tv-show-mood-items/index?mood_id=' + $(this).val();
+            window.location.href = '/tv-show-mood-items/grid?mood_id=' + $(this).val();
         })
 
     }, 750)
