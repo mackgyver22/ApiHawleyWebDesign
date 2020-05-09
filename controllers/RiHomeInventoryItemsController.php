@@ -86,6 +86,8 @@ class RiHomeInventoryItemsController extends Controller
 
         foreach ($Ingredients as $index => $getIngred) {
 
+            $Ingredients[$index]['title_slug'] = $this->slugify($getIngred['title']);
+
             $Ingredients[$index]['selected'] = 0;
             $HasIngred = RiHomeInventory::find()->where(['ingredient_id' => $getIngred['id']])->one();
             if ($HasIngred) {
@@ -100,7 +102,9 @@ class RiHomeInventoryItemsController extends Controller
     }
 
 
-
+    private function slugify($string){
+        return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', ' ', $string), '-'));
+    }
 
 
     /*/

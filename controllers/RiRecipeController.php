@@ -32,7 +32,7 @@ class RiRecipeController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'view', 'create', 'update', 'delete', 'find-model'], // add all actions to take guest to login page
+                        'actions' => ['logout', 'index', 'view', 'create', 'update', 'delete', 'find-model', 'top-recipes'], // add all actions to take guest to login page
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -59,6 +59,91 @@ class RiRecipeController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionTopRecipes()
+    {
+        $request = Yii::$app->request;
+
+        $flavors_include = $request->get("flavors_include", []);
+        $flavors_exclude = $request->get("flavors_exclude", []);
+        $protein_ids = $request->get("protein_ids", []);
+        $contains_salad = $request->get("contains_salad");
+        $contains_gluten = $request->get("contains_gluten");
+
+        $frugal_mode = $request->get("frugal_mode", 0);
+
+        $whereSql = '';
+        if (count($flavors_include) > 0) {
+            $whereSql .= "AND f.id IN (" . implode(",", $flavors_include) . ") 
+            ";
+        }
+        if (count($flavors_exclude) > 0) {
+            $whereSql .= "AND f.id NOT IN (" . implode(",", $flavors_exclude) . ") 
+            ";
+        }
+        if (count($protein_ids) > 0) {
+            $whereSql .= "AND r.protein_id IN (" . implode(",", $protein_ids) . ") 
+            ";
+        }
+        if ($contains_gluten != -1 && $contains_gluten != null) {
+            $whereSql .= "AND r.contains_gluten = :contains_gluten 
+            ";
+        }
+        if ($contains_salad != -1 && $contains_salad != null) {
+            $whereSql .= "AND r.contains_salad = :contains_salad 
+            ";
+        }
+        $frugal_order = "";
+        if ($frugal_mode) {
+            $frugal_order = ", COUNT(DISTINCT(hi.ingredient_id)) DESC ";
+        }
+
+        $sql = "SELECT r.id
+                , r.title as recipe
+                , r.last_date_made
+                , r.image_path
+                , GROUP_CONCAT(f.title SEPARATOR ', ') as flavors
+                , COUNT(DISTINCT(hi.ingredient_id)) AS ingredients_have_count
+                , GROUP_CONCAT(i.title SEPARATOR ', ') AS owned_ingredients
+                FROM ri_recipe r 
+                LEFT  JOIN ri_recipe_flavor rf 
+                    oN r.id = rf.recipe_id 
+                LEFT JOIN ri_flavor f 
+                    oN rf.flavor_id = f.id 
+                INNER JOIN ri_recipe_ingredient ri 
+                    ON r.id = ri.recipe_id 
+                LEFT JOIN ri_home_inventory hi 
+                    ON ri.ingredient_id = hi.ingredient_id 
+                LEFT JOIN ri_ingredient i 
+                    ON hi.ingredient_id = i.id
+                WHERE 1 
+                $whereSql
+                GROUP BY r.id
+                ORDER BY 
+                r.last_date_made DESC 
+                $frugal_order ";
+
+        $query = Yii::$app->db->createCommand($sql);
+
+        if ($contains_gluten != -1 && $contains_gluten != null) {
+            $query->bindParam(':contains_gluten', $contains_gluten);
+        }
+        if ($contains_salad != -1 && $contains_salad != null) {
+            $query->bindParam(':contains_salad', $contains_salad);
+        }
+
+        $recipes = $query->queryAll();
+
+        /*/
+        echo "<pre>";
+        print_r($recipes);
+        die();
+        //*/
+
+        return $this->render('top-recipes', [
+            'recipes' => $recipes,
         ]);
     }
 

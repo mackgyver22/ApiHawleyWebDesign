@@ -52,8 +52,10 @@ AppAsset::register($this);
 
             ]],
             ['label' => 'Recipe Ingredients', 'items' => [
+                ['label' => 'Top Recipes', 'url' => '/ri-recipe/top-recipes'],
                 ['label' => 'Recipes', 'url' => '/ri-recipe/index'],
                 ['label' => 'Home Inventory', 'url' => '/ri-home-inventory-items/index'],
+                ['label' => 'Commonly Used Ingredients', 'url' => '/ri-ingredient/common-ingredients'],
                 ['label' => 'Ingredients', 'url' => '/ri-ingredient/index'],
                 ['label' => 'Recipe Ingredients', 'url' => '/ri-recipe-to-ingredients/index'],
                 ['label' => 'Ingredient Types', 'url' => '/ri-ingredient-type/index'],

@@ -32,7 +32,7 @@ class RiIngredientController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'view', 'create', 'update', 'delete', 'find-model'], // add all actions to take guest to login page
+                        'actions' => ['logout', 'index', 'view', 'create', 'update', 'delete', 'find-model', 'common-ingredients'], // add all actions to take guest to login page
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -59,6 +59,29 @@ class RiIngredientController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Lists all RiIngredient models.
+     * @return mixed
+     */
+    public function actionCommonIngredients()
+    {
+        $sql = "SELECT ri.ingredient_id AS ingredient_id
+                , i.title
+                , count(ri.recipe_id) AS recipe_count
+                FROM ri_recipe_ingredient ri
+                INNER JOIN ri_ingredient i
+                    ON ri.ingredient_id = i.id
+                group by ri.ingredient_id
+                ORDER BY count(ri.recipe_id) DESC ";
+
+        $query = Yii::$app->db->createCommand($sql);
+        $commonIngredients = $query->queryAll();
+
+        return $this->render('common-ingredients', [
+            "commonIngredients" => $commonIngredients
         ]);
     }
 
