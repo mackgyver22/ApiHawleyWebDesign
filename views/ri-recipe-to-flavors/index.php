@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
         padding-left: 0px;
     }
     ul.ingred_checkboxes li {
-        display: inline-block;
+        display: block;
         min-width: 75px;
         max-width: 300px;
         padding: 0 7px 10px 0;
@@ -42,6 +42,10 @@ $this->params['breadcrumbs'][] = $this->title;
                <option value="<?= $getRecipe['id']; ?>" <?= ($getRecipe['selected']) ? "SELECTED" : ""; ?>><?= $getRecipe['title']; ?></option>
             <?php endforeach; ?>
         </select>
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="item-title">Flavors</label>
+        <input type="text" name="new_flavor" id="new_flavor" class="form-control" value="" placeholder="New Flavor" />
     </div>
     <div class="form-group">
         <label class="control-label" for="item-title">Flavors</label>

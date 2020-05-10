@@ -84,12 +84,28 @@ class RiRecipeToFlavorsController extends Controller
                 }
 
                 $flavorIdsArr = Yii::$app->request->post("flavor_id", []);
+                $new_flavor = $request->post("new_flavor", "");
 
                 foreach ($flavorIdsArr as $getFlavorId) {
 
                     $NewRecipeFlavor = new RiRecipeFlavor();
                     $NewRecipeFlavor->recipe_id = $recipe_id;
                     $NewRecipeFlavor->flavor_id = $getFlavorId;
+                    $NewRecipeFlavor->save();
+
+                    $didSave = true;
+                }
+
+                if ($new_flavor) {
+
+                    $NewFlavor = RiFlavor::find()->where(['title' => $new_flavor])->one();
+                    if (!$NewFlavor) {
+                        $NewFlavor = new RiFlavor();
+                        $NewFlavor->title = $new_flavor;
+                    }
+                    $NewRecipeFlavor = new RiRecipeFlavor();
+                    $NewRecipeFlavor->recipe_id = $recipe_id;
+                    $NewRecipeFlavor->flavor_id = $NewFlavor->id;
                     $NewRecipeFlavor->save();
 
                     $didSave = true;

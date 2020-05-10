@@ -53,7 +53,9 @@ class RiRecipe extends \yii\db\ActiveRecord
             'last_date_made' => 'Last Date Made',
             'contains_salad' => 'Contains Salad',
             'contains_gluten' => 'Contains Gluten',
-            'image_path' => 'Image Path'
+            'image_path' => 'Image Path',
+            'protein_id' => 'Protein',
+            'difficulty_level_id' => 'Difficulty Level'
         ];
     }
 
@@ -85,5 +87,15 @@ class RiRecipe extends \yii\db\ActiveRecord
     public function getRiRecipeIngredients()
     {
         return $this->hasMany(RiRecipeIngredient::className(), ['recipe_id' => 'id']);
+    }
+
+    public function getRiProtein()
+    {
+        return $this->hasOne(RiProtein::className(), ['id' => 'protein_id']);
+    }
+
+    public function getRiDifficultyLevel()
+    {
+        return $this->hasOne(RiDifficultyLevel::className(), ['id' => 'difficulty_level_id']);
     }
 }

@@ -2,11 +2,16 @@
 
 namespace app\controllers;
 
+use app\models\RiDifficultyLevel;
+use app\models\RiFlavor;
+use app\models\RiIngredient;
+use app\models\RiProtein;
 use app\models\UploadRecipeImage;
 use Yii;
 use app\models\RiRecipe;
 use app\models\search\RiRecipeSearch;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -67,10 +72,17 @@ class RiRecipeController extends Controller
         $request = Yii::$app->request;
 
         $flavors_include = $request->get("flavors_include", []);
-        $flavors_exclude = $request->get("flavors_exclude", []);
         $protein_ids = $request->get("protein_ids", []);
-        $contains_salad = $request->get("contains_salad");
-        $contains_gluten = $request->get("contains_gluten");
+
+        if ($flavors_include == [0]) {
+            $flavors_include = [];
+        }
+        if ($protein_ids == [0]) {
+            $protein_ids = [];
+        }
+
+        $contains_salad = $request->get("contains_salad", 0);
+        $contains_gluten = $request->get("contains_gluten", 0);
 
         $frugal_mode = $request->get("frugal_mode", 0);
 
@@ -79,19 +91,15 @@ class RiRecipeController extends Controller
             $whereSql .= "AND f.id IN (" . implode(",", $flavors_include) . ") 
             ";
         }
-        if (count($flavors_exclude) > 0) {
-            $whereSql .= "AND f.id NOT IN (" . implode(",", $flavors_exclude) . ") 
-            ";
-        }
         if (count($protein_ids) > 0) {
             $whereSql .= "AND r.protein_id IN (" . implode(",", $protein_ids) . ") 
             ";
         }
-        if ($contains_gluten != -1 && $contains_gluten != null) {
+        if ($contains_gluten) {
             $whereSql .= "AND r.contains_gluten = :contains_gluten 
             ";
         }
-        if ($contains_salad != -1 && $contains_salad != null) {
+        if ($contains_salad) {
             $whereSql .= "AND r.contains_salad = :contains_salad 
             ";
         }
@@ -104,9 +112,9 @@ class RiRecipeController extends Controller
                 , r.title as recipe
                 , r.last_date_made
                 , r.image_path
-                , GROUP_CONCAT(f.title SEPARATOR ', ') as flavors
+                , GROUP_CONCAT(DISTINCT(f.title) SEPARATOR ', ') as flavors
                 , COUNT(DISTINCT(hi.ingredient_id)) AS ingredients_have_count
-                , GROUP_CONCAT(i.title SEPARATOR ', ') AS owned_ingredients
+                , GROUP_CONCAT(DISTINCT(i.title) SEPARATOR ', ') AS owned_ingredients
                 FROM ri_recipe r 
                 LEFT  JOIN ri_recipe_flavor rf 
                     oN r.id = rf.recipe_id 
@@ -134,16 +142,41 @@ class RiRecipeController extends Controller
             $query->bindParam(':contains_salad', $contains_salad);
         }
 
-        $recipes = $query->queryAll();
-
         /*/
         echo "<pre>";
-        print_r($recipes);
+        echo "sql: $sql \n";
+        print_r([
+            ":contains_gluten" => $contains_gluten,
+            ":contains_salad" => $contains_salad,
+        ]);
         die();
         //*/
 
+        $recipes = $query->queryAll();
+
+        $proteins = RiProtein::find()->asArray()->all();
+        foreach ($proteins as $index => $getProtein) {
+            $proteins[$index]['selected'] = 0;
+            if (in_array($getProtein['id'], $protein_ids)) {
+                $proteins[$index]['selected'] = 1;
+            }
+        }
+
+        $flavors = RiFlavor::find()->orderBy(['title' => SORT_ASC])->asArray()->all();
+        foreach ($flavors as $index => $getFlavor) {
+            $flavors[$index]['selected'] = 0;
+            if (in_array($getFlavor['id'], $flavors_include)) {
+                $flavors[$index]['selected'] = 1;
+            }
+        }
+
         return $this->render('top-recipes', [
             'recipes' => $recipes,
+            "proteins" => $proteins,
+            "flavors" => $flavors,
+            "frugal_mode" => $frugal_mode,
+            "contains_gluten" => $contains_gluten,
+            "contains_salad" => $contains_salad
         ]);
     }
 
@@ -182,7 +215,9 @@ class RiRecipeController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            "uploadModel" => null
+            "uploadModel" => null,
+            'proteins' => ArrayHelper::map(RiProtein::find()->all(), 'id', 'title'),
+            'difficulty_levels' => ArrayHelper::map(RiDifficultyLevel::find()->all(), 'id', 'title'),
         ]);
     }
 
@@ -220,7 +255,9 @@ class RiRecipeController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'uploadModel' => $uploadModel
+            'uploadModel' => $uploadModel,
+            'proteins' => ArrayHelper::map(RiProtein::find()->all(), 'id', 'title'),
+            'difficulty_levels' => ArrayHelper::map(RiDifficultyLevel::find()->all(), 'id', 'title'),
         ]);
     }
 

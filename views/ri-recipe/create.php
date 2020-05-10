@@ -1,5 +1,7 @@
 <?php
 
+use app\models\RiProtein;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -15,7 +17,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
-        'uploadModel' => $uploadModel
+        'uploadModel' => $uploadModel,
+        'proteins' => $proteins,
+        'difficulty_levels' => $difficulty_levels,
     ]) ?>
 
 

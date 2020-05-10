@@ -25,6 +25,10 @@ use \yii\jui\DatePicker;
             'clientOptions' => []
     ]) ?>
 
+    <?= $form->field($model, 'protein_id')->dropDownList($proteins) ?>
+
+    <?= $form->field($model, 'difficulty_level_id')->dropDownList($difficulty_levels) ?>
+
     <?= $form->field($model, 'contains_salad')->checkbox() ?>
 
     <?= $form->field($model, 'contains_gluten')->checkbox() ?>
