@@ -19,47 +19,6 @@ catch(PDOException $e)
 }
 
 /*/
-111
-75	Roma Tomatoes
-
-57
-104	Russet Potatoes
-
-82	Shiitake Mushrooms
-107	Cremini Mushrooms
-34	Sliced Cremini Mushrooms
-
-129	Crispy Fried Onions
-84	Crispy JalapeÃ±os
-
-44	Dijon Mustard
-65	Grained Dijon Mustard
-
-18	Grated Parmesan
-100	Shaved Parmesan
-12	Shredded Asiago Cheese
-
-92	Heads of Baby Bok Choy
-168	Sliced Bok Choy
-
-134	Panko Breadcrumbs
-81	Italian Panko Blend
-
-60	Lime
-54	Lemon
-
-36	Shredded Cheddar-Jack Cheese
-151	Shredded White Cheddar Cheese
-
-77	Zucchini
-58	Zucchinis
-20	Sliced Zucchini
-
-42	Trimmed Green Beans
-56	Green Beans
-
-//*/
-
 $ingredientIdsArr = [
     75 => [
       111,
@@ -111,6 +70,14 @@ $ingredientIdsArr = [
     56 => [
         42,
         56
+    ]
+];
+//*/
+
+$ingredientIdsArr = [
+    31 => [
+        40,
+        31
     ]
 ];
 

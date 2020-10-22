@@ -4,8 +4,14 @@ $servername = "";
 $username = "";
 $password = "";
 $dbName = "";
+//*/
+$servername = "localhost";
+$username = "root";
+$password = "gortex!22";
+$dbName = "api_db";
+//*/
 
-die("dont run again \n");
+//die("dont run again \n");
 
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbName", $username, $password);
@@ -37,7 +43,7 @@ $stmt_sel_recipe_ingredient = $conn->prepare($sql);
 $sql = "INSERT INTO ri_recipe_ingredient (recipe_id, ingredient_id) VALUES (:recipe_id, :ingredient_id) ";
 $stmt_ins_recipe_ingredient = $conn->prepare($sql);
 
-$lastRecipe = 49;
+$lastRecipe = 9;
 //$lastRecipe = 2;
 for ($y = 1; $y < $lastRecipe; $y++) {
 
