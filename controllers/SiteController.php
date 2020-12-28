@@ -67,6 +67,20 @@ class SiteController extends Controller
     public function actionIndex()
     {
         /*/
+        $message = Yii::$app->mailer->compose('contact/test_email')
+            ->setFrom('alex-f81477@inbox.mailtrap.io')
+            ->setTo('asimo124@yahoo.com')
+            ->setSubject('test 456')
+            ->attach('/var/www/api.hawleywebdesign.com/web/test1.txt')
+
+         for ($i = 0; $i < $length; $i++) {
+             $message->att
+         }
+        //*/
+
+        //die("did send 2");
+
+        /*/
         $user = new User();
         $user->username = "alex";
         $user->email = "alex@yahoo2.com";
