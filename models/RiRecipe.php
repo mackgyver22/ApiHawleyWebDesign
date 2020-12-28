@@ -13,6 +13,11 @@ use Yii;
  * @property string|null $last_date_made
  * @property int|null $contains_salad
  * @property int|null $contains_gluten
+ * @property string|null $image_path
+ * @property int|null $protein_id
+ * @property int|null $difficulty_level_id
+ * @property int $is_homechef
+ * @property int $is_easy
  *
  * @property RiRecipeAttribute[] $riRecipeAttributes
  * @property RiRecipeFlavor[] $riRecipeFlavors
@@ -35,9 +40,9 @@ class RiRecipe extends \yii\db\ActiveRecord
     {
         return [
             [['title'], 'required'],
-            [['rating', 'contains_salad', 'contains_gluten'], 'integer'],
+            [['rating', 'contains_salad', 'contains_gluten', 'protein_id', 'difficulty_level_id', 'is_homechef', 'is_easy'], 'integer'],
             [['last_date_made'], 'safe'],
-            [['title'], 'string', 'max' => 255],
+            [['title', 'image_path'], 'string', 'max' => 255],
         ];
     }
 
@@ -54,8 +59,10 @@ class RiRecipe extends \yii\db\ActiveRecord
             'contains_salad' => 'Contains Salad',
             'contains_gluten' => 'Contains Gluten',
             'image_path' => 'Image Path',
-            'protein_id' => 'Protein',
-            'difficulty_level_id' => 'Difficulty Level'
+            'protein_id' => 'Protein ID',
+            'difficulty_level_id' => 'Difficulty Level ID',
+            'is_homechef' => 'Is Homechef',
+            'is_easy' => 'Is Easy',
         ];
     }
 
