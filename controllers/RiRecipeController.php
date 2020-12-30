@@ -33,11 +33,11 @@ class RiRecipeController extends Controller
                 //'only' => ['logout'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login', 'error', 'top-recipes'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'view', 'create', 'update', 'delete', 'find-model', 'top-recipes'], // add all actions to take guest to login page
+                        'actions' => ['logout', 'index', 'view', 'create', 'update', 'delete', 'find-model'], // add all actions to take guest to login page
                         'allow' => true,
                         'roles' => ['@'],
                     ],
