@@ -84,16 +84,24 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class="col-xs-4 col-sm-2 checkbox-col">
+            <div class="col-xs-2 col-sm-2 checkbox-col">
                 <input type="checkbox" name="frugal_mode" id="frugal_mode" value="1" <?= ($frugal_mode) ? "CHECKED" : "" ?>>&nbsp; Frugal Mode
             </div>
-            <div class="col-xs-4 col-sm-2 checkbox-col">
+            <div class="col-xs-2 col-sm-2 checkbox-col">
                 <input type="checkbox" name="contains_gluten" id="contains_gluten" value="1" <?= ($contains_gluten) ? "CHECKED" : "" ?>>&nbsp; Has Gluten
             </div>
-            <div class="col-xs-4 col-sm-2 checkbox-col">
+            <div class="col-xs-2 col-sm-2 checkbox-col">
                 <input type="checkbox" name="contains_salad" id="contains_salad" value="1" <?= ($contains_salad) ? "CHECKED" : "" ?>>&nbsp; Has Salad
             </div>
-            <div class="col-xs-4 col-sm-2 checkbox-col">
+
+            <div class="col-xs-2 col-sm-2 checkbox-col">
+                <input type="checkbox" name="is_homechef" id="is_homechef" value="1" <?= ($is_homechef) ? "CHECKED" : "" ?>>&nbsp; Home Chef
+            </div>
+            <div class="col-xs-2 col-sm-2 checkbox-col">
+                <input type="checkbox" name="is_easy" id="is_easy" value="1" <?= ($is_easy) ? "CHECKED" : "" ?>>&nbsp; Easy
+            </div>
+
+            <div class="col-xs-2 col-sm-2 checkbox-col">
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </div>

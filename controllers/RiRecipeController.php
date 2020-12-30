@@ -83,6 +83,8 @@ class RiRecipeController extends Controller
 
         $contains_salad = $request->get("contains_salad", 0);
         $contains_gluten = $request->get("contains_gluten", 0);
+        $is_homechef = $request->get("is_homechef", 0);
+        $is_easy = $request->get("is_easy", 0);
 
         $frugal_mode = $request->get("frugal_mode", 0);
 
@@ -101,6 +103,13 @@ class RiRecipeController extends Controller
         }
         if ($contains_salad) {
             $whereSql .= "AND r.contains_salad = :contains_salad 
+            ";
+        }
+        if ($is_homechef) {
+            $whereSql .= "AND r.is_homechef = :is_homechef 
+            ";
+        } else if ($is_easy) {
+            $whereSql .= "AND r.is_easy = :is_easy 
             ";
         }
         $frugal_order = "";
@@ -141,6 +150,12 @@ class RiRecipeController extends Controller
         if ($contains_salad != -1 && $contains_salad != null) {
             $query->bindParam(':contains_salad', $contains_salad);
         }
+        if ($is_homechef != -1 && $is_homechef != null) {
+            $query->bindParam(':is_homechef', $is_homechef);
+        }
+        if ($is_easy != -1 && $is_easy != null) {
+            $query->bindParam(':is_easy', $is_easy);
+        }
 
         /*/
         echo "<pre>";
@@ -176,7 +191,9 @@ class RiRecipeController extends Controller
             "flavors" => $flavors,
             "frugal_mode" => $frugal_mode,
             "contains_gluten" => $contains_gluten,
-            "contains_salad" => $contains_salad
+            "contains_salad" => $contains_salad,
+            "is_homechef" => $is_homechef,
+            "is_easy" => $is_easy
         ]);
     }
 
