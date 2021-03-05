@@ -11,6 +11,7 @@ use Yii;
  * @property string $title
  * @property int $ingredient_type_id
  * @property float|null $price
+ * @property float|null $cheap_price
  *
  * @property RiHomeInventory[] $riHomeInventories
  * @property RiIngredientType $ingredientType
@@ -35,7 +36,7 @@ class RiIngredient extends \yii\db\ActiveRecord
         return [
             [['title', 'ingredient_type_id'], 'required'],
             [['ingredient_type_id'], 'integer'],
-            [['price'], 'number'],
+            [['price', 'cheap_price'], 'number'],
             [['title'], 'string', 'max' => 255],
             [['ingredient_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => RiIngredientType::className(), 'targetAttribute' => ['ingredient_type_id' => 'id']],
         ];
@@ -51,6 +52,7 @@ class RiIngredient extends \yii\db\ActiveRecord
             'title' => 'Title',
             'ingredient_type_id' => 'Ingredient Type ID',
             'price' => 'Price',
+            'cheap_price' => 'Cheap Price',
         ];
     }
 
