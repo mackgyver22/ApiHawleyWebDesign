@@ -25,7 +25,7 @@ use app\models\ContactForm;
 class RecipeFormController extends Controller
 {
     public $enableCsrfValidation = false;
-    //*/
+    /*/
     private $allowedOriginDomain = "https://recipes.hawleywebdesign.com";
     /*/
     private $allowedOriginDomain = "http://localhost:4200";

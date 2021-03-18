@@ -33,7 +33,7 @@ class RiRecipeController extends Controller
                 //'only' => ['logout'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'error', 'top-recipes'],
+                        'actions' => ['login', 'error', 'top-recipes', 'cooking-notes'],
                         'allow' => true,
                     ],
                     [
@@ -64,6 +64,13 @@ class RiRecipeController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionCookingNotes()
+    {
+        return $this->render('cooking-notes', [
+
         ]);
     }
 

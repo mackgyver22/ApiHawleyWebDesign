@@ -18,6 +18,8 @@ use Yii;
  * @property int|null $difficulty_level_id
  * @property int $is_homechef
  * @property int $is_easy
+ * @property int|null $recipe_style_id
+ * @property int|null $taste_level_id
  *
  * @property RiRecipeAttribute[] $riRecipeAttributes
  * @property RiRecipeFlavor[] $riRecipeFlavors
@@ -40,7 +42,7 @@ class RiRecipe extends \yii\db\ActiveRecord
     {
         return [
             [['title'], 'required'],
-            [['rating', 'contains_salad', 'contains_gluten', 'protein_id', 'difficulty_level_id', 'is_homechef', 'is_easy'], 'integer'],
+            [['rating', 'contains_salad', 'contains_gluten', 'protein_id', 'difficulty_level_id', 'is_homechef', 'is_easy', 'recipe_style_id', 'taste_level_id'], 'integer'],
             [['last_date_made'], 'safe'],
             [['title', 'image_path'], 'string', 'max' => 255],
         ];
@@ -63,6 +65,8 @@ class RiRecipe extends \yii\db\ActiveRecord
             'difficulty_level_id' => 'Difficulty Level ID',
             'is_homechef' => 'Is Homechef',
             'is_easy' => 'Is Easy',
+            'recipe_style_id' => 'Recipe Style ID',
+            'taste_level_id' => 'Taste Level ID',
         ];
     }
 
