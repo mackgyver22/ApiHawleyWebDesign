@@ -114,6 +114,47 @@ class RecipeFormController extends Controller
      *
      * @return string
      */
+    public function actionUpdateIngredient()
+    {
+        $id = Yii::$app->request->get("id", 0);
+
+        $title = Yii::$app->request->post("title", "");
+        $price = Yii::$app->request->post("price", 0);
+        $cheap_price = Yii::$app->request->post("cheap_price", 0);
+
+        $RiIngredient = RiIngredient::findOne($id);
+        if (!$RiIngredient) {
+            throw new \yii\web\NotFoundHttpException('Ingredient not found');
+        }
+        if ($title) {
+            $RiIngredient->title = $title;
+        }
+        $RiIngredient->price = $price;
+        $RiIngredient->cheap_price = $cheap_price;
+
+        $valid = $RiIngredient->validate();
+        if (!$valid) {
+            throw new \yii\web\NotFoundHttpException('Invalid entry: ' . print_r($RiIngredient->getErrors(), true));
+        }
+
+        $RiIngredient->save();
+
+        header("Access-Control-Allow-Origin: {$this->allowedOriginDomain}");
+        header("Content-type: text/json");
+
+        echo json_encode([
+            "item" => $RiIngredient->toArray()
+        ]);
+        die();
+    }
+
+
+
+    /**
+     * Displays homepage.
+     *
+     * @return string
+     */
     public function actionUpdate()
     {
         $id = Yii::$app->request->get("id", 0);
@@ -251,6 +292,7 @@ class RecipeFormController extends Controller
 
         foreach ($RiIngredients as $index => $getIngredient) {
             $RiIngredients[$index]['id'] = intval($getIngredient['id']);
+            $RiIngredients[$index]['is_modifying'] = false;
         }
 
         header("Access-Control-Allow-Origin: {$this->allowedOriginDomain}");

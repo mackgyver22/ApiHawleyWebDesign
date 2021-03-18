@@ -38,7 +38,15 @@ class RiIngredient extends \yii\db\ActiveRecord
             [['ingredient_type_id'], 'integer'],
             [['price', 'cheap_price'], 'number'],
             [['title'], 'string', 'max' => 255],
-            [['ingredient_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => RiIngredientType::className(), 'targetAttribute' => ['ingredient_type_id' => 'id']],
+            [
+                ['ingredient_type_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => RiIngredientType::className(),
+                'targetAttribute' => [
+                    'ingredient_type_id' => 'id'
+                ]
+            ],
         ];
     }
 
