@@ -268,9 +268,18 @@ class RecipeFormController extends Controller
 
     public function actionRecipes()
     {
-        $RiRecipes = RiRecipe::find()
-            ->with('riRecipeIngredients.ingredient')
-            ->orderBy(['title' => SORT_ASC])
+        $request = Yii::$app->request;
+
+        $search = $request->get("search", "");
+
+        $RiRecipesQuery = RiRecipe::find()
+            ->with('riRecipeIngredients.ingredient');
+
+        if ($search) {
+            $RiRecipesQuery->where(['LIKE', 'ri_recipe.title', $search]);
+        }
+
+        $RiRecipes = $RiRecipesQuery->orderBy(['title' => SORT_ASC])
             ->asArray()
             ->all();
 
