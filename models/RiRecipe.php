@@ -4,7 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
-use yii2tech\ar\softdelete\SoftDeleteBehavior;
+
 
 /**
  * This is the model class for table "{{%ri_recipe}}".
@@ -22,6 +22,7 @@ use yii2tech\ar\softdelete\SoftDeleteBehavior;
  * @property int $is_easy
  * @property int|null $recipe_style_id
  * @property int|null $taste_level_id
+ * @property string $recipe_link
  *
  * @property RiRecipeAttribute[] $riRecipeAttributes
  * @property RiRecipeFlavor[] $riRecipeFlavors
@@ -44,9 +45,9 @@ class RiRecipe extends \yii\db\ActiveRecord
     {
         return [
             [['title'], 'required'],
-            [['rating', 'contains_salad', 'contains_gluten', 'protein_id', 'difficulty_level_id', 'is_homechef', 'is_easy', 'recipe_style_id', 'taste_level_id'], 'integer'],
+            [['is_deleted', 'rating', 'contains_salad', 'contains_gluten', 'protein_id', 'difficulty_level_id', 'is_homechef', 'is_easy', 'recipe_style_id', 'taste_level_id'], 'integer'],
             [['last_date_made'], 'safe'],
-            [['title', 'image_path'], 'string', 'max' => 255],
+            [['title', 'image_path', 'recipe_link'], 'string', 'max' => 255],
         ];
     }
 
@@ -56,13 +57,7 @@ class RiRecipe extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(), // auto sets the created_at and updated_at columns
-            'softDeleteBehavior' => [
-                'class' => SoftDeleteBehavior::className(),
-                'softDeleteAttributeValues' => [
-                    'is_deleted' => true
-                ],
-            ],
+
         ];
     }
 
@@ -74,6 +69,7 @@ class RiRecipe extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'title' => 'Title',
+            'is_deleted' => 'Is Deleted',
             'rating' => 'Rating',
             'last_date_made' => 'Last Date Made',
             'contains_salad' => 'Contains Salad',
@@ -85,6 +81,7 @@ class RiRecipe extends \yii\db\ActiveRecord
             'is_easy' => 'Is Easy',
             'recipe_style_id' => 'Recipe Style ID',
             'taste_level_id' => 'Taste Level ID',
+            'recipe_link' => 'Recipe Link',
         ];
     }
 

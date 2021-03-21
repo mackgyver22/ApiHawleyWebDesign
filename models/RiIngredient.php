@@ -9,9 +9,10 @@ use Yii;
  *
  * @property int $id
  * @property string $title
- * @property int $ingredient_type_id
+ * @property int|null $ingredient_type_id
  * @property float|null $price
  * @property float|null $cheap_price
+ * @property int|null $store_section_id
  *
  * @property RiHomeInventory[] $riHomeInventories
  * @property RiIngredientType $ingredientType
@@ -34,19 +35,10 @@ class RiIngredient extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'ingredient_type_id'], 'required'],
-            [['ingredient_type_id'], 'integer'],
+            [['title'], 'required'],
+            [['ingredient_type_id', 'store_section_id'], 'integer'],
             [['price', 'cheap_price'], 'number'],
             [['title'], 'string', 'max' => 255],
-            [
-                ['ingredient_type_id'],
-                'exist',
-                'skipOnError' => true,
-                'targetClass' => RiIngredientType::className(),
-                'targetAttribute' => [
-                    'ingredient_type_id' => 'id'
-                ]
-            ],
         ];
     }
 
@@ -61,6 +53,7 @@ class RiIngredient extends \yii\db\ActiveRecord
             'ingredient_type_id' => 'Ingredient Type ID',
             'price' => 'Price',
             'cheap_price' => 'Cheap Price',
+            'store_section_id' => 'Store Section ID',
         ];
     }
 

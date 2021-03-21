@@ -56,96 +56,130 @@ class TopRecipesController extends Controller
         ];
     }
 
-    private function getSortSql($sort1, $sort2, $sort3, $sort_dir1, $sort_dir2, $sort_dir3) {
+    public function actionShoppingList()
+    {
+        $request = Yii::$app->request;
 
-        $sortSql = "";
-        if ($sort1) {
-            if ($sort1 == "taste_level") {
-                if ($sort_dir1 == "ASC") {
-                    $sort_dir1 = "DESC";
-                } else {
-                    $sort_dir1 = "ASC";
+        $recipeIds = $request->post("recipes", []);
+
+        ## Prepared Statements ##
+        $sql = "SELECT p.id as protein_id, p.title as protein, p.cheap_price 
+                FROM ri_recipe r 
+                INNER JOIN ri_protein p 
+                    ON r.protein_id = p.id 
+                WHERE r.id = :recipe_id ";
+        $stmt_sel_protiens = Yii::$app->db->createCommand($sql);
+
+        $sql = "SELECT i.id, i.title as ingredient, i.cheap_price, ss.title as store_section
+                FROM ri_recipe_ingredient ri 
+                INNER JOIN ri_ingredient i 
+                    ON ri.ingredient_id = i.id 
+                LEFT JOIN ri_store_section ss 
+                    ON i.store_section_id = ss.id 
+                WHERE ri.recipe_id = :recipe_id ";
+        $stmt_sel_ingredients = Yii::$app->db->createCommand($sql);
+
+        $sql = "SELECT ss.id, ss.title, ss.sort_order 
+                FROM ri_store_section ss ";
+        $storeSectionsQuery = Yii::$app->db->createCommand($sql);
+
+        $storeSectionsArr = [];
+        $storeSections = $storeSectionsQuery->queryAll();
+        foreach ($storeSections as $getSection) {
+            $storeSectionsArr[$getSection['title']] = $getSection['sort_order'];
+        }
+
+        $ingredients = [];
+        $recipeProteins = [];
+        foreach ($recipeIds as $getRecipeId) {
+
+            $sql = "SELECT i.id, i.title as ingredient, i.cheap_price, ss.title as store_section
+                FROM ri_recipe_ingredient ri 
+                INNER JOIN ri_ingredient i 
+                    ON ri.ingredient_id = i.id 
+                LEFT JOIN ri_store_section ss 
+                    ON i.store_section_id = ss.id 
+                WHERE ri.recipe_id = :recipe_id ";
+            $stmt_sel_ingredients->bindParam(':recipe_id', $getRecipeId);
+            $Ingreds = $stmt_sel_ingredients->queryAll();
+
+            foreach ($Ingreds as $getIngred) {
+                if (!isset($ingredients[$getIngred['store_section']])) {
+                    $ingredients[$getIngred['store_section']] = [];
                 }
-            }
-            $sortName = "";
-            switch ($sort1) {
-                case "cheap_price":
-                    $sortName = "recipe_low_price";
-                    break;
-                case "price":
-                    $sortName = "recipe_high_price";
-                    break;
-                case "taste_level":
-                    $sortName = "tl.id";
-                    break;
-                case "difficulty_level":
-                    $sortName = "dl.id";
-                    break;
-            }
-            $sortSql = "ORDER BY $sortName $sort_dir1";
-        }
-        if ($sort2) {
-            if ($sort2 == "taste_level") {
-                if ($sort_dir2 == "ASC") {
-                    $sort_dir2 = "DESC";
-                } else {
-                    $sort_dir2 = "ASC";
+                if (!isset($ingredients[$getIngred['store_section']][$getIngred['ingredient']])) {
+                    $ingredients[$getIngred['store_section']][$getIngred['ingredient']] = [
+                        "count" => 0,
+                        "price" => $getIngred['cheap_price']
+                    ];
                 }
+                $ingredients[$getIngred['store_section']][$getIngred['ingredient']]['count'] += 1;
+
             }
-            $sortName = "";
-            switch ($sort2) {
-                case "cheap_price":
-                    $sortName = "recipe_low_price";
-                    break;
-                case "price":
-                    $sortName = "recipe_high_price";
-                    break;
-                case "taste_level":
-                    $sortName = "tl.id";
-                    break;
-                case "difficulty_level":
-                    $sortName = "dl.id";
-                    break;
-            }
-            if (!$sortSql) {
-                $sortSql = "ORDER BY $sortName $sort_dir2";
-            } else {
-                $sortSql .= ", $sortName $sort_dir2";
-            }
-        }
-        if ($sort3) {
-            if ($sort3 == "taste_level") {
-                if ($sort_dir3 == "ASC") {
-                    $sort_dir3 = "DESC";
-                } else {
-                    $sort_dir3 = "ASC";
+
+            $sql = "SELECT p.id as protein_id, p.title as protein, p.cheap_price 
+                    FROM ri_recipe r 
+                    INNER JOIN ri_protein p 
+                        ON r.protein_id = p.id 
+                    WHERE r.id = :recipe_id ";
+            $stmt_sel_protiens->bindParam(':recipe_id', $getRecipeId);
+            $Recipe = $stmt_sel_protiens->queryOne();
+            if ($Recipe) {
+                if (!isset($recipeProteins[$Recipe['protein']])) {
+                    $recipeProteins[$Recipe['protein']] = [
+                        "count" => 0,
+                        "price" => $Recipe['cheap_price']
+                    ];
                 }
-            }
-            $sortName = "";
-            switch ($sort3) {
-                case "cheap_price":
-                    $sortName = "recipe_low_price";
-                    break;
-                case "price":
-                    $sortName = "recipe_high_price";
-                    break;
-                case "taste_level":
-                    $sortName = "tl.id";
-                    break;
-                case "difficulty_level":
-                    $sortName = "dl.id";
-                    break;
-            }
-            if (!$sortSql) {
-                $sortSql = "ORDER BY $sortName $sort_dir3";
-            } else {
-                $sortSql .= ", $sortName $sort_dir3";
+                $recipeProteins[$Recipe['protein']]['count'] += 1;
             }
         }
-        if ($sortSql) {
-            $sortSql .= ", r.title ASC ";
+
+        $ingredientSorted = [];
+        foreach ($ingredients as $storeSection => $ingredQuantity) {
+
+            $useIndex = 0;
+            if (isset($storeSectionsArr[$storeSection])) {
+                $useIndex = $storeSectionsArr[$storeSection];
+            }
+            $ingredientSorted[$useIndex] = $ingredQuantity;
         }
-        return $sortSql;
+        $ingredients = $ingredientSorted;
+
+        $items = [];
+        foreach ($ingredients as $storeSection => $ingredTitleItem) {
+            foreach ($ingredTitleItem as $ingredientTitle => $item) {
+                $eachItem = [
+                    "count" => $item['count'],
+                    "title" => $ingredientTitle,
+                    "price" => intval($item['price'])
+                ];
+                $items[] = $eachItem;
+            }
+            $items[] = [
+                "count" => 0,
+                "title" => "",
+                "price" => 0
+            ];
+        }
+        foreach ($recipeProteins as $proteinTitle => $item) {
+            $eachItem = [
+                "count" => $item['count'],
+                "title" => $proteinTitle,
+                "price" => intval($item['count'] * $item['price'])
+            ];
+            $items[] = $eachItem;
+        }
+
+        header("Access-Control-Allow-Origin: {$this->allowedOriginDomain}");
+        header("Content-type: application/json");
+
+        echo json_encode([
+            "items" => $items/*,
+            "ingredients" => $ingredients,
+            "recipeProteins" => $recipeProteins*/
+        ]);
+        die();
     }
 
     public function actionTopRecipes()
@@ -255,6 +289,19 @@ class TopRecipesController extends Controller
 
         $recipes = $query->queryAll();
 
+        ## Prepared Statements ##
+        $sql = "SELECT * FROM ri_recipe_ingredient WHERE recipe_id = :recipe_id ";
+        $stmt_sel_recipe_ingredients = Yii::$app->db->createCommand($sql);
+        ## ##
+
+        foreach ($recipes as $index => $getRecipe) {
+
+            $sql = "SELECT * FROM ri_recipe_ingredient WHERE recipe_id = :recipe_id ";
+            $stmt_sel_recipe_ingredients->bindParam(':recipe_id', $getRecipe['id']);
+            $recipeIngredients = $stmt_sel_recipe_ingredients->queryAll();
+            $recipes[$index]['riRecipeIngredients'] = $recipeIngredients;
+        }
+
         $proteins = RiProtein::find()->asArray()->all();
         foreach ($proteins as $index => $getProtein) {
             $proteins[$index]['selected'] = 0;
@@ -271,5 +318,97 @@ class TopRecipesController extends Controller
             /*"proteins" => $proteins,*/
         ]);
         die();
+    }
+
+    private function getSortSql($sort1, $sort2, $sort3, $sort_dir1, $sort_dir2, $sort_dir3) {
+
+        $sortSql = "";
+        if ($sort1) {
+            if ($sort1 == "taste_level") {
+                if ($sort_dir1 == "ASC") {
+                    $sort_dir1 = "DESC";
+                } else {
+                    $sort_dir1 = "ASC";
+                }
+            }
+            $sortName = "";
+            switch ($sort1) {
+                case "cheap_price":
+                    $sortName = "recipe_low_price";
+                    break;
+                case "price":
+                    $sortName = "recipe_high_price";
+                    break;
+                case "taste_level":
+                    $sortName = "tl.id";
+                    break;
+                case "difficulty_level":
+                    $sortName = "dl.id";
+                    break;
+            }
+            $sortSql = "ORDER BY $sortName $sort_dir1";
+        }
+        if ($sort2) {
+            if ($sort2 == "taste_level") {
+                if ($sort_dir2 == "ASC") {
+                    $sort_dir2 = "DESC";
+                } else {
+                    $sort_dir2 = "ASC";
+                }
+            }
+            $sortName = "";
+            switch ($sort2) {
+                case "cheap_price":
+                    $sortName = "recipe_low_price";
+                    break;
+                case "price":
+                    $sortName = "recipe_high_price";
+                    break;
+                case "taste_level":
+                    $sortName = "tl.id";
+                    break;
+                case "difficulty_level":
+                    $sortName = "dl.id";
+                    break;
+            }
+            if (!$sortSql) {
+                $sortSql = "ORDER BY $sortName $sort_dir2";
+            } else {
+                $sortSql .= ", $sortName $sort_dir2";
+            }
+        }
+        if ($sort3) {
+            if ($sort3 == "taste_level") {
+                if ($sort_dir3 == "ASC") {
+                    $sort_dir3 = "DESC";
+                } else {
+                    $sort_dir3 = "ASC";
+                }
+            }
+            $sortName = "";
+            switch ($sort3) {
+                case "cheap_price":
+                    $sortName = "recipe_low_price";
+                    break;
+                case "price":
+                    $sortName = "recipe_high_price";
+                    break;
+                case "taste_level":
+                    $sortName = "tl.id";
+                    break;
+                case "difficulty_level":
+                    $sortName = "dl.id";
+                    break;
+            }
+            if (!$sortSql) {
+                $sortSql = "ORDER BY $sortName $sort_dir3";
+            } else {
+                $sortSql .= ", $sortName $sort_dir3";
+            }
+        }
+        if ($sortSql) {
+            $sortSql .= ", r.title ASC ";
+        }
+        return $sortSql;
     }
 }

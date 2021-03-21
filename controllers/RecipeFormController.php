@@ -65,6 +65,7 @@ class RecipeFormController extends Controller
     public function actionCreate()
     {
         $title = Yii::$app->request->post("title", "");
+        $recipe_link = Yii::$app->request->post("recipe_link", "");
         $rating = Yii::$app->request->post("rating", 1);
         $last_date_made2 = Yii::$app->request->post("last_date_made", 0);
         $contains_salad = Yii::$app->request->post("contains_salad", 0);
@@ -83,6 +84,7 @@ class RecipeFormController extends Controller
 
         $RiRecipe = new RiRecipe();
         $RiRecipe->title = $title;
+        $RiRecipe->recipe_link = $recipe_link;
         $RiRecipe->rating = $rating;
         $RiRecipe->last_date_made = $last_date_made;
         $RiRecipe->contains_salad = $contains_salad;
@@ -160,6 +162,7 @@ class RecipeFormController extends Controller
         $id = Yii::$app->request->get("id", 0);
 
         $title = Yii::$app->request->post("title", "");
+        $recipe_link = Yii::$app->request->post("recipe_link", "");
         $rating = Yii::$app->request->post("rating", 1);
         $last_date_made2 = Yii::$app->request->post("last_date_made", 0);
         $contains_salad = Yii::$app->request->post("contains_salad", 0);
@@ -181,6 +184,7 @@ class RecipeFormController extends Controller
             throw new \yii\web\NotFoundHttpException('Recipe not found');
         }
         $RiRecipe->title = $title;
+        $RiRecipe->recipe_link = $recipe_link;
         $RiRecipe->rating = $rating;
         $RiRecipe->last_date_made = $last_date_made;
         $RiRecipe->contains_salad = $contains_salad;

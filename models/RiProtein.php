@@ -9,6 +9,8 @@ use Yii;
  *
  * @property int $id
  * @property string $title
+ * @property float|null $cheap_price
+ * @property float|null $price
  */
 class RiProtein extends \yii\db\ActiveRecord
 {
@@ -27,6 +29,7 @@ class RiProtein extends \yii\db\ActiveRecord
     {
         return [
             [['title'], 'required'],
+            [['cheap_price', 'price'], 'number'],
             [['title'], 'string', 'max' => 255],
         ];
     }
@@ -39,6 +42,8 @@ class RiProtein extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'title' => 'Title',
+            'cheap_price' => 'Cheap Price',
+            'price' => 'Price',
         ];
     }
 }

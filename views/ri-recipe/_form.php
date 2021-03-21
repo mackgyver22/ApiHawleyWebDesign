@@ -29,6 +29,8 @@ use \yii\jui\DatePicker;
 
     <?= $form->field($model, 'difficulty_level_id')->dropDownList($difficulty_levels) ?>
 
+    <?= $form->field($model, 'link')->textInput() ?>
+
     <?= $form->field($model, 'contains_salad')->checkbox() ?>
 
     <?= $form->field($model, 'contains_gluten')->checkbox() ?>
