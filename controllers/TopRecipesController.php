@@ -79,6 +79,10 @@ class TopRecipesController extends Controller
                 WHERE ri.recipe_id = :recipe_id ";
         $stmt_sel_ingredients = Yii::$app->db->createCommand($sql);
 
+        $sql = "SELECT hi.ingredient_id FROM ri_home_inventory hi WHERE hi.ingredient_id = :ingredient_id ";
+        $stmt_sel_home_inventory = Yii::$app->db->createCommand($sql);
+        ## ##
+
         $sql = "SELECT ss.id, ss.title, ss.sort_order 
                 FROM ri_store_section ss ";
         $storeSectionsQuery = Yii::$app->db->createCommand($sql);
@@ -107,14 +111,20 @@ class TopRecipesController extends Controller
                 if (!isset($ingredients[$getIngred['store_section']])) {
                     $ingredients[$getIngred['store_section']] = [];
                 }
-                if (!isset($ingredients[$getIngred['store_section']][$getIngred['ingredient']])) {
-                    $ingredients[$getIngred['store_section']][$getIngred['ingredient']] = [
-                        "count" => 0,
-                        "price" => $getIngred['cheap_price']
-                    ];
-                }
-                $ingredients[$getIngred['store_section']][$getIngred['ingredient']]['count'] += 1;
 
+                $sql = "SELECT hi.ingredient_id FROM ri_home_inventory hi WHERE hi.ingredient_id = :ingredient_id ";
+                $stmt_sel_home_inventory->bindParam(':ingredient_id', $getIngred['id']);
+                $HasHomeInventory = $stmt_sel_home_inventory->queryOne();
+
+                if (!$HasHomeInventory) {
+                    if (!isset($ingredients[$getIngred['store_section']][$getIngred['ingredient']])) {
+                        $ingredients[$getIngred['store_section']][$getIngred['ingredient']] = [
+                            "count" => 0,
+                            "price" => $getIngred['cheap_price']
+                        ];
+                    }
+                    $ingredients[$getIngred['store_section']][$getIngred['ingredient']]['count'] += 1;
+                }
             }
 
             $sql = "SELECT p.id as protein_id, p.title as protein, p.cheap_price 
@@ -229,8 +239,8 @@ class TopRecipesController extends Controller
                 , r.title as recipe
                 , p.title as protein
                 , rs.title as style
-                , SUM(i.cheap_price) as recipe_low_price
-                , SUM(i.price) as recipe_high_price
+                , (SUM(i.cheap_price) + p.cheap_price) as recipe_low_price
+                , (SUM(i.price) + p.price) as recipe_high_price
                 , dl.title as difficulty_level
                 , tl.title as taste_level
                 , r.last_date_made
@@ -279,9 +289,9 @@ class TopRecipesController extends Controller
         echo json_encode([
             "new_sql" => $sql,
             "params" => [
-                ":contains_gluten" => $contains_gluten,
-                ":contains_salad" => $contains_salad,
-                ":is_easy" => $is_easy,
+                ":difficulty_level_id" => $difficulty_level_id,
+                ":recipe_style_id" => $recipe_style_id,
+                ":taste_level_id" => $taste_level_id,
             ]
         ]);
         die();
