@@ -59,9 +59,9 @@ class TopRecipesController extends Controller
     public function actionIngredientsByPrice()
     {
         $sql = "SELECT 
-                ri.id, ri.title, ri.price 
+                ri.id, ri.title, ri.cheap_price as price 
                 FROM ri_ingredient ri 
-                order by ri.price DESC ";
+                order by ri.cheap_price DESC ";
 
         $query = Yii::$app->db->createCommand($sql);
         $results = $query->queryAll();
@@ -258,8 +258,24 @@ class TopRecipesController extends Controller
                 , r.title as recipe
                 , p.title as protein
                 , rs.title as style
-                , (SUM(i.cheap_price) + p.cheap_price) as recipe_low_price
-                , (SUM(i.price) + p.price) as recipe_high_price
+                , (
+                    SUM(
+                        CASE WHEN hi.id IS NULL THEN 
+                            i.cheap_price
+                        ELSE
+                            0
+                        END
+                    ) 
+                    + p.cheap_price) as recipe_low_price
+                , (
+                    SUM(
+                        CASE WHEN hi.id IS NULL THEN 
+                            i.price
+                        ELSE
+                            0
+                        END
+                    ) 
+                    + p.price) as recipe_high_price
                 , dl.title as difficulty_level
                 , tl.title as taste_level
                 , r.last_date_made
@@ -281,7 +297,6 @@ class TopRecipesController extends Controller
                     oN i.id = hi.ingredient_id
                 WHERE 1 
                 AND r.is_deleted = 0
-                AND hi.id IS NULL
 
                 $whereSql
                 
@@ -366,7 +381,7 @@ class TopRecipesController extends Controller
                     $sortName = "recipe_low_price";
                     break;
                 case "price":
-                    $sortName = "recipe_high_price";
+                    $sortName = "recipe_low_price";
                     break;
                 case "taste_level":
                     $sortName = "tl.id";
@@ -391,7 +406,7 @@ class TopRecipesController extends Controller
                     $sortName = "recipe_low_price";
                     break;
                 case "price":
-                    $sortName = "recipe_high_price";
+                    $sortName = "recipe_low_price";
                     break;
                 case "taste_level":
                     $sortName = "tl.id";
@@ -420,7 +435,7 @@ class TopRecipesController extends Controller
                     $sortName = "recipe_low_price";
                     break;
                 case "price":
-                    $sortName = "recipe_high_price";
+                    $sortName = "recipe_low_price";
                     break;
                 case "taste_level":
                     $sortName = "tl.id";
