@@ -56,6 +56,25 @@ class TopRecipesController extends Controller
         ];
     }
 
+    public function actionIngredientsByPrice()
+    {
+        $sql = "SELECT 
+                ri.id, ri.title, ri.price 
+                FROM ri_ingredient ri 
+                order by ri.price DESC ";
+
+        $query = Yii::$app->db->createCommand($sql);
+        $results = $query->queryAll();
+
+        header("Access-Control-Allow-Origin: {$this->allowedOriginDomain}");
+        header("Content-type: application/json");
+
+        echo json_encode([
+            "items" => $results
+        ]);
+        die();
+    }
+
     public function actionShoppingList()
     {
         $request = Yii::$app->request;
