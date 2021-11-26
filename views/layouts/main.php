@@ -51,6 +51,14 @@ AppAsset::register($this);
                 ['label' => 'TV Show Moods', 'url' => '/tv-show-to-moods/index'],
 
             ]],
+            ['label' => 'Out To Eat', 'items' => [
+                ['label' => 'Restaurants', 'url' => '/ote-restaurant/index'],
+                ['label' => 'Dishes', 'url' => '/ote-dish/index'],
+                ['label' => 'Tags', 'url' => '/ote-tag/index'],
+                ['label' => 'Assign Tags', 'url' => '/ote-tag-relationship/index'],
+
+
+            ]],
             ['label' => 'Recipe Ingredients', 'items' => [
                 ['label' => 'Top Recipes', 'url' => '/ri-recipe/top-recipes'],
                 ['label' => 'Recipes', 'url' => '/ri-recipe/index'],
