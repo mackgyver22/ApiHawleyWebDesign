@@ -21,7 +21,7 @@ use app\models\ContactForm;
 class WlActivityDayController extends Controller
 {
     public $enableCsrfValidation = false;
-    /*/
+    //*/
     private $allowedOriginDomain = "https://weightloss.hawleywebdesign.com";
     /*/
     private $allowedOriginDomain = "http://127.0.0.1:4200";
