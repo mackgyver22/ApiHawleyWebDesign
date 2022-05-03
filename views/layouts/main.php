@@ -41,6 +41,8 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Items', 'url' => '/item'],
+            ['label' => 'Tax Expenses', 'url' => '/tax-expense'],
+            ['label' => 'Tax Expense Categories', 'url' => '/tax-expense-category'],
             ['label' => 'TV Shows', 'items' => [
                 ['label' => 'What To Watch', 'url' => '/tv-show-mood-items/grid'],
                 ['label' => 'What To Watch List', 'url' => '/tv-show-mood-items/index'],
