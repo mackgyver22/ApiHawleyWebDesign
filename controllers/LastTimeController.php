@@ -10,6 +10,7 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\rest\ActiveController;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
@@ -18,8 +19,11 @@ use app\models\ContactForm;
 class LastTimeController extends Controller
 {
     public $enableCsrfValidation = false;
+    //*/
     private $allowedOriginDomain = "https://contacts.hawleywebdesign.com";
-    //private $allowedOriginDomain = "http://127.0.0.1:4201";
+    /*/
+    private $allowedOriginDomain = "http://127.0.0.1:4200";
+    //*/
 
     /**
      * {@inheritdoc}
@@ -138,6 +142,84 @@ class LastTimeController extends Controller
             die();
         }
     }
+
+    /**
+     * Displays homepage.
+     *
+     * @return string
+     */
+    public function actionSearch()
+    {
+        header("Access-Control-Allow-Origin: {$this->allowedOriginDomain}");
+
+        $request = Yii::$app->request;
+        $get_days_back = $request->get('daysBack', 0);
+        $keyword = $request->get("keyword", "");
+        if (!$keyword) {
+            header("Content-type: text/json");
+
+            $results = [
+                "results" => [],
+            ];
+            echo json_encode($results);
+            die();
+        }
+        $keyword = "%" . $keyword . "%";
+
+        $pay_date = date("Y-m-d");
+
+        $date = new DateTime($pay_date);
+        $date->modify("-$get_days_back day");
+        $pay_date = $date->format("Y-m-d");
+
+        $sql = "SELECT iuh.*, i.title as item_name, i.color, iuh.date_used  
+                FROM ltc_item_used_history iuh 
+                INNER JOIN ltc_item i 
+                    ON iuh.item_id = i.id 
+                WHERE 1 
+                AND i.title LIKE :keyword ";
+
+        $query = Yii::$app->db->createCommand($sql);
+        $query->bindValue(':keyword', $keyword);
+        $results = $query->queryAll();
+
+        $dateItems = [];
+        foreach ($results as $getItem) {
+            $dateUsed = date("M d, Y", strtotime($getItem['date_used']));
+            if (!isset($dateItems[$dateUsed])) {
+                $dateItems[$dateUsed] = [];
+            }
+            $dateItems[$dateUsed][] = $getItem;
+        }
+
+        /*/
+        header("Content-type: text/json");
+        $results = [
+            "dateitems" => $dateItems,
+        ];
+        echo json_encode($results);
+        die();
+        //*/
+
+        $resultset = [];
+        foreach ($dateItems as $dateUsed => $items) {
+
+            $eachItem = [
+                'date' => $dateUsed,
+                'children' => $items
+            ];
+            $resultset[] = $eachItem;
+        }
+
+        header("Content-type: text/json");
+
+        $results = [
+            "results" => $resultset,
+        ];
+        echo json_encode($results);
+        die();
+    }
+
 
     /**
      * Displays homepage.
