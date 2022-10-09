@@ -11,6 +11,17 @@ $this->params['breadcrumbs'][] = ['label' => 'Items', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
+<style type="text/css">
+    .color-area {
+        width: 125px;
+        height: 22px;
+        display: inline-block;
+        color: white;
+        font-weight: bold;
+        border-radius: 5px;
+        text-align: center;
+    }
+</style>
 <div class="item-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -25,6 +36,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
+
+    <div class="color-area" style="background-color: <?= $model->color ?>;">
+        <?= $model->color; ?>
+    </div>
+    <div style="clear: both; height: 16px;"></div>
 
     <?= DetailView::widget([
         'model' => $model,
