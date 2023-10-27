@@ -232,12 +232,12 @@ class LastTimeController extends Controller
 
         $request = Yii::$app->request;
         $get_days_back = $request->get('daysBack', 0);
-        
-        $pay_date = date("Y-m-d");
+
+        $pay_date = date("Y-m-d", strtotime("+7 day", strtotime(date("Y-m-d"))));
 
         $date = new DateTime($pay_date);
         $date->modify("-$get_days_back day");
-        $pay_date = $date->format("Y-m-d");
+        $pay_date = date("Y-m-d", strtotime("+7 day", strtotime(date("Y-m-d"))));
 
         $sql = "SELECT iuh.*, i.title as item_name, i.color  
                 FROM ltc_item_used_history iuh 

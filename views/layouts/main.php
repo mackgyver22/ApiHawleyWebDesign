@@ -40,6 +40,11 @@ AppAsset::register($this);
     echo NavX::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
+             ['label' => 'Moving', 'items' => [
+                ['label' => 'Boxes', 'url' => '/mv-box'],
+                ['label' => 'Categories', 'url' => '/mv-category'],
+                ['label' => 'Rooms', 'url' => '/mv-room']
+            ]],
             ['label' => 'Items', 'url' => '/item'],
             ['label' => 'Tax Expenses', 'url' => '/tax-expense'],
             ['label' => 'Tax Expense Categories', 'url' => '/tax-expense-category'],
