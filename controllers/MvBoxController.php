@@ -76,8 +76,8 @@ class MvBoxController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'rooms' => ArrayHelper::map(MvRoom::find()->all(), 'id', 'title'),
-            'categories' => ArrayHelper::map(MvCategory::find()->all(), 'id', 'title'),
+            'rooms' => ArrayHelper::map(MvRoom::find()->orderBy(['title' => SORT_ASC])->all(), 'id', 'title'),
+            'categories' => ArrayHelper::map(MvCategory::find()->orderBy(['title' => SORT_ASC])->all(), 'id', 'title'),
         ]);
     }
 
@@ -98,8 +98,8 @@ class MvBoxController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'rooms' => ArrayHelper::map(MvRoom::find()->all(), 'id', 'title'),
-            'categories' => ArrayHelper::map(MvCategory::find()->all(), 'id', 'title'),
+            'rooms' => ArrayHelper::map(MvRoom::find()->orderBy(['title' => SORT_ASC])->all(), 'id', 'title'),
+            'categories' => ArrayHelper::map(MvCategory::find()->orderBy(['title' => SORT_ASC])->all(), 'id', 'title'),
         ]);
     }
 

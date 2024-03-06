@@ -100,6 +100,19 @@ class LastTimeController extends Controller
         $itemUsedHistory->date_used = $dateUsed;
         $itemUsedHistory->save();
 
+        if ($itemId == 40) {
+
+            for ($i = 0; $i < 60; $i++) {
+
+                $dateUsed = date("Y-m-d", strtotime($dateUsed) + (86400 * 2));
+
+                $itemUsedHistory = new ItemUsedHistory();
+                $itemUsedHistory->item_id = $itemId;
+                $itemUsedHistory->date_used = $dateUsed;
+                $itemUsedHistory->save();
+            }
+        }
+
         header("Content-type: text/json");
 
         echo json_encode([
